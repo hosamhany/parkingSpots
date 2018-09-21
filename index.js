@@ -63,11 +63,11 @@ app.post('/driver/create', (req, res) => {
 //creatingBooking
 app.post('/bookingSpot/create', (req, res) => {
     var body = _.pick(req.body, ['driverId', 'parkingSpotId']);
-    DriverManager.changeReservationStatusToTrue(body, (() => {
+    DriverManager.changeReservationStatusToTrue(body, (response => {
         ParkingManager.changeReservationStatusToTrue(body, (res => {
-            res.status(200).send("OK");
+            res.status(200).send(response);
         }), (err) => {
-            res.status(500).send(res);
+            res.status(500).send(err);
         })
     }), (err) => {
         res.status(500).send(err);
@@ -77,9 +77,9 @@ app.post('/bookingSpot/create', (req, res) => {
 //deleting reservation
 app.post('/bookingSpot/delete', (req, res) => {
     var body = _.pick(req.body, ['driverId', 'parkingSpotId']);
-    DriverManager.changeReservationStatusToFalse(body, (() => {
+    DriverManager.changeReservationStatusToFalse(body, (response => {
         ParkingManager.changeReservationStatusToFalse(body, (res => {
-            res.status(200).send("OK");
+            res.status(200).send(response);
         }), (err) => {
             res.status(500).send(err);
         })

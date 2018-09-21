@@ -45,7 +45,7 @@ function changeReservationStatusToTrue(body, callback, failure){
         else {
             ParkingSpot.findByIdAndUpdate({_id: body.parkingSpotId} , { isFree: false, driverParkingId: body.driverId}).then((res) => {
                 if(res){
-                    callback(res);
+                    callback("OK");
                 } 
                 else {
                     failure("Parking spot not found")
