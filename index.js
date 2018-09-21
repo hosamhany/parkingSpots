@@ -17,7 +17,7 @@ const DriverManager = require('./managers/driver/driver.manager');
 var app = express();
 
 //setting the value of the port to run on
-const port = process.env.port || 3000;
+const port = process.env.PORT || 3000;
 const hostname = '0.0.0.0';
 
 //informing the app that it will be dealing with JSON data
