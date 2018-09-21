@@ -1,7 +1,7 @@
 const mognoose = require('mongoose');
 
 const driverSchema = new mognoose.Schema({
-    reservingASpot:{
+    isReservingASpot:{
         type: Boolean,
         default: false
     },
@@ -17,8 +17,8 @@ const driverSchema = new mognoose.Schema({
         }
     }
 });
-const driver = mognoose.model('Driver', driverSchema);
+const Driver = mognoose.model('Driver', driverSchema);
 
 module.exports= {
-    driver
+    Driver
 };
