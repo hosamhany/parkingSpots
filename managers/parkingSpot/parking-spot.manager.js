@@ -28,7 +28,8 @@ function getNearBySpots(body, callback, failure) {
                     coordinates: body.driverCoordinates
                 }
             }
-        }
+        },
+        isFree: true
     }).find((err, results) => {
         if (err) failure(err);
         else
