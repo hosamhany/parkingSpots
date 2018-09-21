@@ -42,7 +42,8 @@ app.post('/parkingSpot/create', (req, res) => {
 
 //getting the near spots
 app.post('/parkingSpot/getNearSpots', (req, res) => {
-    var body = _.pick(req.body, ['driverCoordinates']);
+    var body = _.pick(req.body, ['driverId']);
+    console.log(body);
     ParkingManager.getNearBySpots(body,((response) => {
         res.status(200).send(response);
     }),(err) => {

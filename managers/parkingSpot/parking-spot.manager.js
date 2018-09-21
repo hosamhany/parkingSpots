@@ -1,4 +1,5 @@
 const { ParkingSpot } = require('../../models/parking-spot.model');
+const { Driver } = require('../../models/driver.model');
 
 function createParkingSpot(body, callback, failure) {
     ParkingSpot.create({
@@ -19,22 +20,25 @@ function createParkingSpot(body, callback, failure) {
 }
 
 function getNearBySpots(body, callback, failure) {
-    ParkingSpot.find({
-        location:{
-            $near: {
-                $maxDistance: 1000,
-                $geometry:{
-                    type: "Point",
-                    coordinates: body.driverCoordinates
+    Driver.findById(body.driverId).then((res) => {
+        ParkingSpot.find({
+            location:{
+                $near: {
+                    $maxDistance: 1000,
+                    $geometry:{
+                        type: "Point",
+                        coordinates: res.location.coordinates
+                    }
                 }
-            }
-        },
-        isFree: true
-    }).find((err, results) => {
-        if (err) failure(err);
-        else
-        callback(results);
+            },
+            isFree: true
+        }).find((err, results) => {
+            if (err) failure(err);
+            else
+            callback(results);
+        })
     })
+
 }
 
 function changeReservationStatusToTrue(body, callback, failure){
