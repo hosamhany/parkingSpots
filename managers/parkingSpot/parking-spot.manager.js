@@ -59,9 +59,31 @@ function changeReservationStatusToTrue(body, callback, failure){
     })
 }
 
+function changeReservationStatusToFalse(body, callback, failure){
+    ParkingSpot.findById(body.parkingSpotId).then((response) => {
+        if(response.isFree === true ){
+            failure("Parking spot already free");
+        }
+        else {
+            ParkingSpot.findByIdAndUpdate({_id: body.parkingSpotId} , { isFree: true, $unset:{ driverParkingId:1 }}).then((res) => {
+                if(res){
+                    callback(res);
+                } 
+                else {
+                    failure("Parking spot not found")
+                }
+            }).catch((err) => {
+                failure(err);
+            })
+        }
+    }).catch((err) => {
+        failure(err);
+    })
+}
+
 module.exports= {
     createParkingSpot,
     getNearBySpots,
-    changeReservationStatusToTrue
-
+    changeReservationStatusToTrue,
+    changeReservationStatusToFalse
 }

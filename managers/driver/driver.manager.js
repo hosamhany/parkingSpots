@@ -42,11 +42,29 @@ function changeReservationStatusToTrue(body, callback, failure) {
 }
 
 function changeReservationStatusToFalse(body, callback, failure) {
+    Driver.findById(body.driverId).then((res) => {
+        if (res.isReservingASpot === false){
+            failure("Driver is not reserving a parking spot");
+        }
+        else {
+            Driver.findByIdAndUpdate({_id: body.driverId}, {isReservingASpot: false, $unset:{ parkingSpotId: 1 }}).then((res) => {
+                if(res){
+                    callback(res);
+                }
+                else {
+                    failure("Driver not found");
+                }
+            }).catch((err => {
+                failure(err);
+            }))
+        }
+    })
     Driver.findByIdAndUpdate()
 }
 
 module.exports = {
     createDriver,
-    changeReservationStatusToTrue
+    changeReservationStatusToTrue,
+    changeReservationStatusToFalse
     
 }

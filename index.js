@@ -29,6 +29,8 @@ app.get('/isAlive', (req, res) => {
 });
 
 //ParkingSpots endpoints
+
+//creating an endpoint
 app.post('/parkingSpot/create', (req, res) => {
     var body = _.pick(req.body, ['isFree', 'coordinates']);
     ParkingManager.createParkingSpot(body, ((response) => {
@@ -38,6 +40,7 @@ app.post('/parkingSpot/create', (req, res) => {
     })
 });
 
+//getting the near spots
 app.post('/parkingSpot/getNearSpots', (req, res) => {
     var body = _.pick(req.body, ['driverCoordinates']);
     ParkingManager.getNearBySpots(body,((response) => {
@@ -47,6 +50,7 @@ app.post('/parkingSpot/getNearSpots', (req, res) => {
     })
 });
 //Drivers endpoints
+//creating a driver
 app.post('/driver/create', (req, res) => {
     var body = _.pick(req.body, ['isReservingASpot', 'coordinates']);
     DriverManager.createDriver(body, ((response) => {
@@ -55,19 +59,34 @@ app.post('/driver/create', (req, res) => {
         res.status(500).send(err);
     })
 });
+
 //creatingBooking
 app.post('/bookingSpot/create', (req, res) => {
     var body = _.pick(req.body, ['driverId', 'parkingSpotId']);
-    DriverManager.changeReservationStatusToTrue(body, (response => {
+    DriverManager.changeReservationStatusToTrue(body, (() => {
         ParkingManager.changeReservationStatusToTrue(body, (res => {
-            res.status(200).send(response);
+            res.status(200).send("OK");
         }), (err) => {
-            res.status(200).send(response);
+            res.status(500).send(res);
         })
     }), (err) => {
         res.status(500).send(err);
     })
 });
+
+//deleting reservation
+app.post('/bookingSpot/delete', (req, res) => {
+    var body = _.pick(req.body, ['driverId', 'parkingSpotId']);
+    DriverManager.changeReservationStatusToFalse(body, (() => {
+        ParkingManager.changeReservationStatusToFalse(body, (res => {
+            res.status(200).send("OK");
+        }), (err) => {
+            res.status(500).send(err);
+        })
+    }), (err) => {
+        res.status(500).send(err);
+    })
+})
 
 app.listen(port, hostname, () => {
     console.log(`started on port ${port}`);
