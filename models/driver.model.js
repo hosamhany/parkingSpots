@@ -17,6 +17,9 @@ const driverSchema = new mognoose.Schema({
         }
     }
 });
+//this is used to tell mongodb that we are using 2dsphere not a coordinates system.
+driverSchema.index({location: "2dsphere" });
+
 const Driver = mognoose.model('Driver', driverSchema);
 
 module.exports= {
