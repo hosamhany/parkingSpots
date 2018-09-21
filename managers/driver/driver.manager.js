@@ -18,6 +18,35 @@ function createDriver(body, callback, failure) {
     });
 }
 
+function changeReservationStatusToTrue(body, callback, failure) {
+    Driver.findById(body.driverId).then((res) => {
+        if(res.isReservingASpot === true){
+            failure("Driver already reserving a spot");
+        }
+        else {
+            Driver.findByIdAndUpdate({_id: body.driverId}, {isReservingASpot: true, parkingSpotId: body.parkingSpotId}).then((res) => {
+                if(res){
+                    callback(res);
+                }
+                else {
+                    failure("Driver not found");
+                }
+            }).catch((err => {
+                failure(err);
+            }))
+        }
+    }).catch((err) => {
+        failure(err);
+    })
+
+}
+
+function changeReservationStatusToFalse(body, callback, failure) {
+    Driver.findByIdAndUpdate()
+}
+
 module.exports = {
-    createDriver
+    createDriver,
+    changeReservationStatusToTrue
+    
 }

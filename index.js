@@ -40,7 +40,6 @@ app.post('/parkingSpot/create', (req, res) => {
 
 app.post('/parkingSpot/getNearSpots', (req, res) => {
     var body = _.pick(req.body, ['driverCoordinates']);
-    console.log(body);
     ParkingManager.getNearBySpots(body,((response) => {
         res.status(200).send(response);
     }),(err) => {
@@ -55,8 +54,20 @@ app.post('/driver/create', (req, res) => {
     }), (err) => {
         res.status(500).send(err);
     })
-})
-
+});
+//creatingBooking
+app.post('/bookingSpot/create', (req, res) => {
+    var body = _.pick(req.body, ['driverId', 'parkingSpotId']);
+    DriverManager.changeReservationStatusToTrue(body, (response => {
+        ParkingManager.changeReservationStatusToTrue(body, (res => {
+            res.status(200).send(response);
+        }), (err) => {
+            res.status(200).send(response);
+        })
+    }), (err) => {
+        res.status(500).send(err);
+    })
+});
 
 app.listen(port, hostname, () => {
     console.log(`started on port ${port}`);

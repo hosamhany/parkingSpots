@@ -1,5 +1,6 @@
 const mognoose = require('mongoose');
 
+const ObjectId = mognoose.Schema.ObjectId;
 const driverSchema = new mognoose.Schema({
     isReservingASpot:{
         type: Boolean,
@@ -15,6 +16,10 @@ const driverSchema = new mognoose.Schema({
             type: [Number],
             required: true
         }
+    },
+    parkingSpotId: {
+        type: ObjectId,
+        required: false
     }
 });
 //this is used to tell mongodb that we are using 2dsphere not a coordinates system.

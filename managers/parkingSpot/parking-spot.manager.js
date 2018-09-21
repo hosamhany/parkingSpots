@@ -37,8 +37,31 @@ function getNearBySpots(body, callback, failure) {
     })
 }
 
+function changeReservationStatusToTrue(body, callback, failure){
+    ParkingSpot.findById(body.parkingSpotId).then((response) => {
+        if(response.isFree === false ){
+            failure("Parking spot already taken");
+        }
+        else {
+            ParkingSpot.findByIdAndUpdate({_id: body.parkingSpotId} , { isFree: false, driverParkingId: body.driverId}).then((res) => {
+                if(res){
+                    callback(res);
+                } 
+                else {
+                    failure("Parking spot not found")
+                }
+            }).catch((err) => {
+                failure(err);
+            })
+        }
+    }).catch((err) => {
+        failure(err);
+    })
+}
+
 module.exports= {
     createParkingSpot,
-    getNearBySpots
+    getNearBySpots,
+    changeReservationStatusToTrue
 
 }
