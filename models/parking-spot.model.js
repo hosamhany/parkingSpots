@@ -17,7 +17,7 @@ const parkingSpotSchema = new mognoose.Schema ({
         }
     }
 });
-const ParkingSpot = new mognoose.model('ParkingSpot', parkingSpotSchema);
+const ParkingSpot = mognoose.model('ParkingSpot', parkingSpotSchema);
 
 module.exports = {
     ParkingSpot
